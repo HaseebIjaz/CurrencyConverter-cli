@@ -3,6 +3,13 @@ import inquirer, { Question, QuestionCollection } from "inquirer";
 type CurrencySymbol = "PKR" | "USD" | "GBP" | "ETH";
 type ConversionObjType = { [X in CurrencySymbol] : { [Y in CurrencySymbol] : number } }//A mapped object type
 
+interface CurrencyAnswer { 
+    "name": string,
+    "to": CurrencySymbol,
+    "from": CurrencySymbol,
+    "amount": string,
+}
+
 const conversions: ConversionObjType = {
     "PKR":{
         "USD": 0.0035,
@@ -30,6 +37,7 @@ const conversions: ConversionObjType = {
     }
 } 
 const currencies = ["PKR","USD","GBP","ETH"];
+
 const currencyConverter = async () => {
     const questions:QuestionCollection = [
         {
@@ -58,10 +66,10 @@ const currencyConverter = async () => {
         }
     ];
 
-    const answers = await inquirer.prompt(questions);
+    const answers:CurrencyAnswer = await inquirer.prompt(questions);
     const from:CurrencySymbol = answers["from"];
     const to:CurrencySymbol = answers["to"];
-    const amount:number = answers["amount"].toString();
+    const amount:number = parseInt(answers["amount"]);
     const multiplicationFactor = conversions[from][to];
     console.log(`You get ${multiplicationFactor * amount} ${to}`);
 }

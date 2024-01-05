@@ -56,7 +56,7 @@ const currencyConverter = async () => {
     const answers = await inquirer.prompt(questions);
     const from = answers["from"];
     const to = answers["to"];
-    const amount = answers["amount"].toString();
+    const amount = parseInt(answers["amount"]);
     const multiplicationFactor = conversions[from][to];
     console.log(`You get ${multiplicationFactor * amount} ${to}`);
 };
